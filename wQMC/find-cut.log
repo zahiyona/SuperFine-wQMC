@@ -1,0 +1,14 @@
+
+
+Quartet MaxCut version 3.0 by Sagi Snir, University of Haifa
+
+quartet file is wQMC/quartets.wqrt, 
+At main, back from readQuartets, maxSp 97
+
+
+Number of quartets read: 1534, max ele 97
+
+
+Started working at  Sun Jan 28 14:57:49 2018
+
+73,73,63,59 - ERROR ERROR ERROR: two species are the same
