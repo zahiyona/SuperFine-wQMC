@@ -36,6 +36,19 @@ from spruce.unrooted import *
 from spruce.metrics import *
 from superfine.adapters import *
 from superfine.logger import *
+from Bio import Phylo
+import matplotlib.pyplot as plt
+
+def print_tree(tree, name_to_save=None):
+    temp_tree_path = "temp.tre"
+    with open(temp_tree_path, "w") as fh:
+        fh.write(str(tree))
+    ptree = Phylo.read(temp_tree_path, "newick")
+    os.remove(temp_tree_path)
+    path=None
+    if name_to_save is not None:
+        path = "{}/{}.png".format("figures", name_to_save)
+    Phylo.draw(tree=ptree, do_show=False, save_path=path)
 
 
 def SuperFine(input, options):
@@ -49,6 +62,7 @@ def SuperFine(input, options):
 
     # SCM phase/step
     tree = mergeTrees(sourceTrees, options)
+    # print_tree(tree, "SCMtree")
 
     if options.writeData:
         f = open(baseName + ".scmTree." + options.writeData, 'w')
@@ -66,7 +80,8 @@ def SuperFine(input, options):
     logger = Logger()
 
     if options.reconciler == "qmc":
-        for polytomy in xfindPolytomies(tree):
+        for index, polytomy in enumerate(xfindPolytomies(tree)):
+            # print_tree(polytomy, "polytomy_{}".format(index))
             (quartetTrees, delabeling) = encodeSourceTrees(polytomy, sourceTrees, logger, options)
 
             if quartetTrees:    # not empty list of quartet trees with which to resolve polytomy
@@ -74,8 +89,9 @@ def SuperFine(input, options):
                 bipartitionsToAdd[polytomy] = reconcileTrees(quartetTrees, delabeling, options)
     elif options.reconciler.endswith("mrp") or options.reconciler.endswith("fml") or options.reconciler.endswith("rml"):
         for polytomy in xfindPolytomies(tree):
+            # print_tree(sourceTrees[0],"source_tree")
             (newSourceTrees, delabeling) = relabelSourceTrees(polytomy, sourceTrees, logger, options)
-
+            # print_tree(newSourceTrees[0],"source_tree_label")
             if newSourceTrees:  # there are new source trees with which to resolve polytomy
                 bipartitionsToAdd[polytomy] = reconcileTrees(newSourceTrees, delabeling, options)
 

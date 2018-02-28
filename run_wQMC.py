@@ -28,6 +28,7 @@ def convert_quartets_to_source_trees(quartets_path):
 
 def execute_SF(simulated_tree_path, simulated_tree_path_prefix, reconciler='qmc', result_tree_suffix='SFwQMC'):
     start_time = time.time()
+    print("start processing " + simulated_tree_path)
     (input, options) = parse_options(input=simulated_tree_path, reconciler=reconciler)
     # try:
     tree = SuperFine(input, options)
@@ -42,7 +43,8 @@ def execute_SF(simulated_tree_path, simulated_tree_path_prefix, reconciler='qmc'
 
 
 def main():
-    simulated_folder_path = 'datasets/simulated'
+    # simulated_folder_path = 'datasets/simulated'
+    simulated_folder_path = '/home/zahi/Desktop/tree_simulation/tree_simulation_python/tree_simulation/data/simulated'
     for taxa in os.listdir(simulated_folder_path):
         taxa_folder_path = simulated_folder_path + "/" + taxa
         for scaffold in os.listdir(taxa_folder_path):

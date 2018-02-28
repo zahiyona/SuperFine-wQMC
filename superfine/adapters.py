@@ -141,9 +141,9 @@ class QMCAdapter(object):
         return (output)
 
     def get_tree(self):
-        inputs = ["%s:%s" % (self.trees[qTree], qTree) for qTree in sorted(self.trees.keys())]
+        inputs = ["%s:%s" % (qTree, self.trees[qTree]) for qTree in sorted(self.trees.keys())]
         input = ' '.join(inputs)
-        input = input[::-1]
+        # input = input[::-1]
         with open(self._quartets_path, 'w') as fh:
             fh.write(input)
         command = "{} qrtt={} otre={} > {}".format(
